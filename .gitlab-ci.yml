@@ -1,3 +1,7 @@
+variables:
+  APP_IMAGE: "${CI_REGISTRY_IMAGE}/app"
+  DEPLOY_DIR: "${REMOTE_DIR}" 
+
 stages:
   - test
   - build
@@ -17,9 +21,9 @@ test:
   cache:
     paths:
       - vendor/bundle
-  except:
-    variables:
-      - $CD_TEST_IGNORE
+  #except:
+  #  variables:
+  #    - $CD_TEST_IGNORE
 
 build:
   stage: build
@@ -32,18 +36,23 @@ build:
   # Install CA certs, openssl to https downloads, python for gcloud sdk
   - apk add --update make ca-certificates openssl python
   - update-ca-certificates
-  # Build.
-  - ./scripts/image_build.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA
-  only:
-    refs:
-      - branches
-      - tags
-    variables:
-      - $CD_DOCKER_USERNAME
-      - $CD_DOCKER_PASSWORD
-  except:
-    variables:
-      - $CD_BUILD_IGNORE
+  # Build & push
+  - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+  - docker build -t "${APP_IMAGE}:release-v2" .
+  - docker push "${APP_IMAGE}:release-v2"
+
+  #- ./scripts/image_build.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA
+
+  #only:
+  #  refs:
+  #    - branches
+  #    - tags
+  #  variables:
+  #    - $CD_DOCKER_USERNAME
+  #    - $CD_DOCKER_PASSWORD
+  #except:
+  #  variables:
+  #    - $CD_BUILD_IGNORE
 
 deploy:
   stage: deploy
@@ -52,20 +61,32 @@ deploy:
   - docker:dind
   script:
   # Install bash, curl, git for deployment script
-  - apk update && apk add --no-cache bash curl git
+  #- apk update && apk add --no-cache bash curl git
+  - apk update && apk add rsync openssh curl
   # Install CA certs, openssl to https downloads, python for gcloud sdk
-  - apk add --update make ca-certificates openssl python
-  - update-ca-certificates
-  # Deploy.
-  - ./scripts/image_deploy.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA $CI_COMMIT_BEFORE_SHA
-  only:
-    refs:
-      - branches
-      - tags
-    variables:
-      - $CD_DOCKER_USERNAME
-      - $CD_DOCKER_PASSWORD
-      - $CD_DEPLOY_SCRIPT
-  except:
-    variables:
-      - $CD_DEPLOY_IGNORE
+  #- apk add --update make ca-certificates openssl python
+  #- update-ca-certificates
+  # Prepare SSH settings
+  - mkdir -p ~/.ssh && (umask  077 ; echo "${DEPLOY_KEY_PRIVATE}" | base64 -d > ~/.ssh/id_ed25519)
+  # - mkdir -p ~/.ssh && (umask  077 ; echo "${DEPLOY_KEY_PRIVATE}"> ~/.ssh/id_ed25519)
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  # Prepare files for transfer
+  - mkdir ${DEPLOY_DIR}
+  - cp docker-compose.server.yml ${DEPLOY_DIR}/docker-compose.yml
+  - echo "APP_IMAGE=${APP_IMAGE}" >> ${DEPLOY_DIR}/.env
+  # Transfer to server
+  - rsync -r ${DEPLOY_DIR} "${REMOTE_HOST}:./"
+  # Run commands on the server
+  - ssh ${REMOTE_HOST} /bin/bash
+    "
+    echo 'Starting..';
+    cd ~/${DEPLOY_DIR};
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY;
+    docker-compose pull;
+    docker-compose up -d --force-recreate;
+    echo "Deleting old images...";
+    docker container prune || true;
+    docker image prune --force || true;
+    "
+  
+
