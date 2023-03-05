@@ -11,7 +11,8 @@ before_script:
 
 test:
   stage: test
-  image: ruby:2.5
+  #image: ruby:2.5
+  image: ruby:2.7
   script:
   - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
   - bundle config path vendor/bundle
