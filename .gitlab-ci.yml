@@ -75,7 +75,7 @@ deploy:
   # Prepare files for transfer
   - mkdir ${DEPLOY_DIR}
   - cp docker-compose.server.yml ${DEPLOY_DIR}/docker-compose.yml
-  - echo "APP_IMAGE=${APP_IMAGE}" >> ${DEPLOY_DIR}/.env
+  - echo "APP_IMAGE=${APP_IMAGE}:release-v2" >> ${DEPLOY_DIR}/.env
   # Transfer to server
   - rsync -r ${DEPLOY_DIR} "${REMOTE_HOST}:./"
   # Run commands on the server
