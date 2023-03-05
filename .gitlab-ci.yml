@@ -35,8 +35,8 @@ build:
   # Install bash, curl, git for deployment script
   - apk update && apk add --no-cache bash curl git
   # Install CA certs, openssl to https downloads, python for gcloud sdk
-  - apk add --update make ca-certificates openssl python
-  - update-ca-certificates
+  #- apk add --update make ca-certificates openssl python
+  #- update-ca-certificates
   # Build & push
   - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
   - docker build -t "${APP_IMAGE}:release-v2" .
