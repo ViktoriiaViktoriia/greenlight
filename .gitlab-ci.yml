@@ -69,6 +69,7 @@ deploy:
   #- update-ca-certificates
   # Prepare SSH settings
   - mkdir -p ~/.ssh && (umask  077 ; echo "${DEPLOY_KEY_PRIVATE}" | base64 -d > ~/.ssh/id_rsa)
+  # - mkdir -p ~/.ssh && (umask  077 ; echo "${DEPLOY_KEY_PRIVATE}" | base64 -d > ~/.ssh/id_ed25519)
   # - mkdir -p ~/.ssh && (umask  077 ; echo "${DEPLOY_KEY_PRIVATE}"> ~/.ssh/id_ed25519)
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   # Prepare files for transfer
