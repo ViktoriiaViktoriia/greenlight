@@ -4,7 +4,7 @@ services:
   app:
     entrypoint: [bin/start]
     image: bigbluebutton/dev_greenlight:release-v2
-    container_name: greenlight-v2
+    container_name: greenlight-v2-dev
     env_file: .env
     restart: unless-stopped
     ports:

@@ -4,11 +4,11 @@ services:
   app:
     entrypoint: [bin/start]
     image: ${APP_IMAGE}
-    container_name: greenlight-v2
+    container_name: greenlight-v2-dev
     env_file: .env
     restart: unless-stopped
     ports:
-      - "6000:3000"
+      - "6100:3100"
 # When using external logging
 #    logging:
 #      driver: $LOG_DRIVER
