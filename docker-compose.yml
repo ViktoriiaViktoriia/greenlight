@@ -3,7 +3,7 @@ version: '3'
 services:
   app:
     entrypoint: [bin/start]
-    image: viktoriiaviktoriia/greenlight_repo:test-v2
+    image: viktoriiaviktoriia/greenlight_repo:test_v2
     container_name: greenlight-v2-dev
     env_file: .env
     restart: unless-stopped

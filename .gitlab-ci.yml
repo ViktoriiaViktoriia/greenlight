@@ -7,12 +7,12 @@ stages:
   - build
   - deploy
 
-before_script:
+#before_script:
 
 test:
   stage: test
   #image: ruby:2.5
-  image: ruby:2.7
+  image: ruby:latest
   script:
   - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
   - bundle config path vendor/bundle
@@ -39,8 +39,8 @@ build:
   #- update-ca-certificates
   # Build & push
   - docker login -u gitlab-ci-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
-  - docker build -t "${APP_IMAGE}:release-v2" .
-  - docker push "${APP_IMAGE}:release-v2"
+  - docker build -t "${APP_IMAGE}:latest" -t "${APP_IMAGE}:test_v2" .
+  - docker image push --all-tags "${APP_IMAGE}" 
 
   #- ./scripts/image_build.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA
 
@@ -75,7 +75,7 @@ deploy:
   # Prepare files for transfer
   - mkdir ${DEPLOY_DIR}
   - cp docker-compose.server.yml ${DEPLOY_DIR}/docker-compose.yml
-  - echo "APP_IMAGE=${APP_IMAGE}:release-v2" >> ${DEPLOY_DIR}/.env
+  - echo "APP_IMAGE=${APP_IMAGE}:latest" >> ${DEPLOY_DIR}/.env
   # Transfer to server
   - rsync -r ${DEPLOY_DIR} "${REMOTE_HOST}:./"
   # Run commands on the server
