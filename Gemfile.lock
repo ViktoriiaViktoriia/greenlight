@@ -109,15 +109,12 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    date (3.0.0)
     declarative (0.0.20)
     diff-lcs (1.5.0)
     digest-crc (0.6.4)
       rake (>= 12.0.0, < 14.0.0)
     docile (1.4.0)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
     erubi (1.11.0)
     execjs (2.8.1)
     factory_bot (6.2.1)
@@ -153,7 +150,7 @@ GEM
     ffi (1.15.5)
     font-awesome-sass (5.9.0)
       sassc (>= 1.11)
-    globalid (1.0.1)
+    globalid (1.1.0)
       activesupport (>= 5.0)
     google-apis-core (0.5.0)
       addressable (~> 2.5, >= 2.5.1)
@@ -211,7 +208,7 @@ GEM
       aes_key_wrap
       bindata
       httpclient
-    jwt (2.5.0)
+    jwt (2.7.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -224,26 +221,31 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.7.1)
+    mail (2.8.1)
       mini_mime (>= 0.1.1)
+      net-imap
+      net-pop
+      net-smtp
     marcel (1.0.2)
     memoist (0.16.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
     minitest (5.17.0)
     msgpack (1.5.1)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
+    net-imap (0.3.4)
+      date
+      net-protocol
     net-ldap (0.17.0)
-    net-protocol (0.1.3)
+    net-pop (0.1.0)
+    net-protocol (0.2.1)
       timeout
     net-smtp (0.3.2)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.13.10)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
     oauth (1.1.0)
       oauth-tty (~> 1.0, >= 1.0.1)
@@ -313,7 +315,7 @@ GEM
     puma (4.3.12)
       nio4r (~> 2.0)
     racc (1.6.1)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-oauth2 (1.21.3)
       activesupport
       attr_required
@@ -507,7 +509,6 @@ DEPENDENCIES
   byebug (~> 11.1)
   cancancan (~> 2.3.0)
   coveralls (~> 0.8.23)
-  dotenv-rails (~> 2.8, >= 2.8.1)
   factory_bot_rails (~> 6.2, >= 6.2.0)
   faker (~> 2.16)
   font-awesome-sass (~> 5.9.0)
@@ -555,3 +556,6 @@ DEPENDENCIES
   uglifier (~> 4.2.0)
   web-console (~> 3.7, >= 3.7.0)
   webmock (~> 3.11)
+
+BUNDLED WITH
+   2.1.2

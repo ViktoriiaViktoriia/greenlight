@@ -51,3 +51,6 @@ coverage*
 
 # Needed for rspec's --only-failures command
 spec/failures.txt
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
