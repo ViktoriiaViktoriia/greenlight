@@ -5,6 +5,9 @@ source 'https://rubygems.org'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
+
+ruby '3.0.5'
+#ruby '3.2.1'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -34,7 +37,7 @@ gem 'omniauth-twitter', '~> 1.4.0'
 gem 'pagy', '~> 3.11.0'
 gem 'pluck_to_hash', '~> 1.0.2'
 gem 'puma', '~> 4.3.12'
-gem 'rails', '~> 5.2.8.1'
+gem 'rails', '~> 7.0.4.2'
 gem 'random_password', '~> 0.1.1'
 gem "recaptcha", '~> 5.7.0'
 gem 'redcarpet', '~> 3.5.1'
@@ -43,7 +46,7 @@ gem 'repost', '~> 0.3.8'
 gem 'rubocop', '~> 1.10.0'
 gem 'sassc-rails', '~> 2.1.2'
 gem 'sprockets', '~> 3.7.2'
-gem 'sqlite3', '~> 1.3.6'
+gem 'sqlite3', '~> 1.6.2'
 gem 'tabler-rubygem', git: 'https://github.com/blindsidenetworks/tabler-rubygem.git', tag: '0.1.4.1'
 gem 'turbolinks', '~> 5.2.1'
 gem 'tzinfo-data', '~> 1.2021.5'

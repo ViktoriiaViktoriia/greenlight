@@ -4,7 +4,7 @@ services:
   app:
     entrypoint: [bin/start]
     image: viktoriiaviktoriia/greenlight_repo:test_v2
-    container_name: greenlight-v2-dev
+    container_name: greenlight-v2-test
     env_file: .env
     restart: unless-stopped
     ports:
@@ -19,7 +19,7 @@ services:
       - ./log:/usr/src/app/log
       - ./storage:/usr/src/app/storage
 # When using sqlite3 as the database
-      - ./db/production-postgres:/usr/src/app/db/production
+#      - ./db/production:/usr/src/app/db/production
 # When using postgresql as the database
     links:
       - db
@@ -33,4 +33,4 @@ services:
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=ctZAUb8NNm16JujRC1KNSL8kEnplyk+8
+      - POSTGRES_PASSWORD=11a24c946131dcfd4401e9ce41953888cf07d7ac1834dfb4

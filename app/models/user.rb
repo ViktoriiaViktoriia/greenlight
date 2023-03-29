@@ -133,7 +133,8 @@ class User < ApplicationRecord
   def activate
     set_role :user if role_id.nil?
     without_terms_acceptance {
-      update_attributes(email_verified: true, activated_at: Time.zone.now, activation_digest: nil)
+      #update_attributes(email_verified: true, activated_at: Time.zone.now, activation_digest: nil)
+      update(email_verified: true, activated_at: Time.zone.now, activation_digest: nil)
     }
   end
 
@@ -149,14 +150,16 @@ class User < ApplicationRecord
   def create_reset_digest
     new_token = SecureRandom.urlsafe_base64
     without_terms_acceptance {
-      update_attributes(reset_digest: User.hash_token(new_token), reset_sent_at: Time.zone.now)
+      #update_attributes(reset_digest: User.hash_token(new_token), reset_sent_at: Time.zone.now)
+      update(reset_digest: User.hash_token(new_token), reset_sent_at: Time.zone.now)
     }
     new_token
   end
 
   def create_activation_token
     new_token = SecureRandom.urlsafe_base64
-    without_terms_acceptance { update_attributes(activation_digest: User.hash_token(new_token)) }
+    # without_terms_acceptance { update_attributes(activation_digest: User.hash_token(new_token)) }
+    without_terms_acceptance { update(activation_digest: User.hash_token(new_token)) }
     new_token
   end
 
@@ -206,7 +209,8 @@ class User < ApplicationRecord
 
     create_home_room if main_room.nil? && new_role.get_permission("can_create_rooms")
 
-    update_attribute(:role, new_role)
+    # update_attribute(:role, new_role)
+    update(:role, new_role)
 
     new_role
   end
@@ -226,7 +230,8 @@ class User < ApplicationRecord
 
   def create_home_room
     room = Room.create!(owner: self, name: I18n.t("home_room"))
-    update_attributes(main_room: room)
+    # update_attributes(main_room: room)
+    update(main_room: room)
   end
 
   # returns true if the user has attempted to log in too many times in the past 24 hours
@@ -260,7 +265,8 @@ class User < ApplicationRecord
     # Initializes a room for the user and assign a BigBlueButton user id.
     id = "gl-#{(0...12).map { rand(65..90).chr }.join.downcase}"
 
-    update_attributes(uid: id)
+    # update_attributes(uid: id)
+    update(uid: id)
 
     # Initialize the user to use the default user role
     role_provider = Rails.configuration.loadbalanced_configuration ? provider : "greenlight"

@@ -15,10 +15,12 @@ test:
 # Use sqlite in production by default. Greenlight supports
 production:
   <<: *default
-  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite3' %>
+  adapter: sqlite3
+#  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite3' %>
   host: <%= ENV['DB_HOST'] %>
   port: <%= ENV['DB_PORT' || '5432'] %>
-  database: <%= ENV['DB_NAME'] || 'db/production/production.sqlite3' %>
+  database: db/greenlight_production
+#  database: <%= ENV['DB_NAME'] || 'db/production/production.sqlite3' %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
   pool: <%= ENV['DB_POOL_SIZE'] || '9' %>

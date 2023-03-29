@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   before_action :block_unknown_hosts, :redirect_to_https, :set_user_domain, :set_user_settings, :maintenance_mode?,
   :migration_error?, :user_locale, :check_admin_password, :check_user_role
 
-  protect_from_forgery with: :exceptions
+  protect_from_forgery with: :exception
 
   # Retrieves the current user.
   def current_user
