@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_27_213252) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_01_203522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -41,9 +41,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_27_213252) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "formats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -171,6 +168,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_27_213252) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["setting_id"], name: "index_site_settings_on_setting_id"
+  end
+
+  create_table "tenants", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "client_secret", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tenants_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
